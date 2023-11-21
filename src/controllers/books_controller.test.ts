@@ -146,5 +146,22 @@ describe("DELETE /api/v1/books/{bookId} endpoint", () => {
 
 		// Assert
 		expect(res.statusCode).toEqual(204);
+		expect(res.body).toStrictEqual({});
+		expect(mockDeleteBook).toHaveBeenCalledWith(2);
+	});
+
+	test("status code 404 for a book that is not found", async () => {
+		// Arrange
+		const mockDeleteBook = jest
+			.spyOn(bookService, "deleteBook")
+			.mockResolvedValue(0);
+
+		// Act
+		const res = await request(app).delete("/api/v1/books/3");
+
+		// Assert
+		expect(res.statusCode).toEqual(404);
+		expect(res.body).toStrictEqual({ message: "Book not found." });
+		expect(mockDeleteBook).toHaveBeenCalledWith(3);
 	});
 });
