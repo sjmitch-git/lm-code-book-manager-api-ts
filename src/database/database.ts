@@ -1,4 +1,7 @@
 import { Sequelize } from "sequelize";
+import { CONFIG } from "../config";
 
-// TODO: This should be external config
-export const sequelize = new Sequelize("sqlite::memory:");
+const { dbUserName, dbPassword, dbHost, dbPort, dbName } = CONFIG;
+const connString = `postgres://${dbUserName}:${dbPassword}@${dbHost}:${dbPort}/${dbName}`;
+
+export let sequelize = new Sequelize(connString);
